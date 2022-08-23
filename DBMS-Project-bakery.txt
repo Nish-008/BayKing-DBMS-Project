@@ -1,0 +1,297 @@
+Customer:
+create table Customer(
+	 Customer_ID int NOT NULL AUTO_INCREMENT,
+	 Customer_name varchar(255),
+    	 Email varchar(255),
+    	 Address varchar(255),
+    	 Contact varchar(255),
+    	 PRIMARY KEY(Customer_ID)
+);
+ INSERT INTO Customer(Customer_ID, Customer_name, Email, Address, Contact)
+ Values(1001,'Riana Karim','riana1@gmail.com','442/2-C,Tejgaon','01876822222');
+INSERT INTO Customer(Customer_name,Email,Address,Contact)
+    Values('Omi San','0mi@yahoo.com','223,Block-B,Uttara','01923456781'),
+    ('Rahima Afroze','r0se@yahoo.com','123,road-6,Banani','01934656781'),
+    ('Miyoko Rahman','m1yok0@gmail.com','263,Block-A,Uttara','01928046781'),
+    ('Kazi Karim','kar1m@yahoo.com','223,Block-C,Shantinagar','01923494821'),
+    ('Omi Chan','0m1_c@yahoo.com','223,road no-4,Kazipara','01868456781'),
+     ('Razia Banu','raz1a@gmail.com','22/3-A,Rupnagar','01829405881'),
+     ('Karim Hossain','kar1m@yahoo.com','881/3-B,Gulistan','01761236781'),
+     ('Namira Rahman','namU@gmail.com','43/A,Gulshan','01766667781'),
+     ('Narumi Momose','m0m0@gmail.com','444/3-C,Nam Garden,Kafrul','01888875781'),
+     ('Lee Chan','c_h_a_n@gmail.com','23/A,Uttara','01923456211'),
+     ('Samira Hoque','5am@gmail.com','19/D,Link road','01983222281'),
+     ('Kazi Nupur','f1shy@gmail.com','54/5,Block-B,Uttara','01875556781'),
+     ('Eren Mia','3ren@yahoo.com','777/6-A,Gulshan-1','01833333381'),
+    ('Faizan Hossain','fiza@yahoo.com','3/C,Dhanmondi','01844444981');
+
+orders:
+ create table Orders(
+     Order_ID int NOT NULL AUTO_INCREMENT,
+     Total int,
+     Status varchar(255),
+     PRIMARY KEY(Order_ID)
+     );
+ INSERT INTO Orders(Order_ID,Total,Status)
+    Values('2001','510','Available');
+ INSERT INTO Orders(Total,Status)
+    Values('650','Available'),
+    ('1020','Available'),
+    ('1520','Available'),
+    ('300','Available'),
+    ('800','Available'),
+    ('1500','Available'),
+    ('2500','Available'),
+    ('580','Available'),
+    ('670','Available'),
+    ('590','Available'),
+    ('340','Available'),
+    ('350','Available'),
+    ('400','Available'),
+    ('50','Available');
+Admin:
+ Create table Admin(
+    username varchar(255),
+    fullname varchar(255),
+    PRIMARY KEY(username)
+    );
+ Insert into Admin(username,fullname)
+    Values('Nishat','Fariha Zaman Nishat'),
+    ('Fabiha','Fabiha Kabir'),
+    ('Khadiza','Khadiza Akter'),
+    ('Tasfia','Tasfia Zaima'),
+    ('Toha','Fariha Rahman Toha');
+Food:
+create table Food(
+    Food_ID int NOT NULL AUTO_INCREMENT,
+    Description varchar(255),
+    PRIMARY KEY(Food_ID)
+    );
+Insert into Food(Food_ID,Description)
+Values(201,'Made with in season blueberries');
+Insert into Food(Description)
+    Values('Made with Cream, egg whites, butter, lemon juice, egg yolks'),
+    ('Made with zhite cake mix, cream cheese, cherry pie filling, cherry gelatin'),
+    ('Made with Vanilla cake mix, whipped cream cheese filling'),
+    ('Made with Creamy peanut butter, brown sugar, egg, baking soda'),
+    ('Made with Grain white rice, vanilla bean paste, heavy whipping cream'),
+    ('Made with Fresh peaches, heavy whipping cream, single crust pie, eggs'),
+    ('Made with Fresh orange juice, cream, cake flour, butter, orange zest'),
+    ('Made with Brown sugar, apple, butter, cinnamon, baking powder'),
+    ('Made with Condensed coconut milk, coconut cream, self raising flour'),
+    ('Made with Sour cream, pineapple juice, crushed pineapple'),
+    ('Made with Cream cheese, sour cream, graham cracker crumbs'),
+    ('Made with Almond flour, brown sugar'),
+    ('Made with Egg, chocolate chips, sugar, raisin'),
+    ('Made with Cherry, lemon juice, cake flour, sugar');
+
+Category:
+ Create table Category(
+    Category_ID int NOT NULL AUTO_INCREMENT,
+    Food_name varchar(255),
+    PRIMARY KEY(Category_ID)
+    );
+ INSERT INTO Category(Category_ID,Food_name)
+    Values('101','Blueberry Bottom Cake');
+ Insert into Category(Food_name)
+    Values('Lemon Pie'),
+    ('Cherry Cream Cake'),
+    ('Cheese Dump Cake'),
+    ('Peanut Butter Cookies'),
+    ('Creamy Rice pudding'),
+    ('Peaches Cream Pie'),
+    ('Orange Fluff Cake'),
+    ('Cinnamon Pudding Cake'),
+    ('Creamy Coconut Cake'),
+    ('Pineapple Cupcake'),
+    ('Strawberry Cheesecake'),
+    ('Gluten-free bread'),
+    ('Combo Cookies'),
+    ('Cherry Pie');
+
+contains:
+create table contains(
+     Food_ID int NOT NULL AUTO_INCREMENT,
+     Category_ID int NOT NULL,
+     PRIMARY KEY(Food_ID,Category_ID),
+     FOREIGN KEY(Food_ID) REFERENCES food(Food_ID),
+     FOREIGN KEY(Category_ID) REFERENCES category(Category_ID)
+     );
+ INSERT INTO Contains(Food_ID,Category_ID)
+    Values(201,101);
+Insert into Contains(Category_ID)
+    Values(102),
+    (103),
+    (104),
+    (105),
+    (106),
+    (107),
+    (108),
+    (109),
+    (110),
+    (111),
+    (112),
+    (113),
+    (114),
+    (115);
+places:
+create table Places(
+        Customer_ID int NOT NULL AUTO_INCREMENT,
+	Date varchar(255),
+      Order_ID int NOT NULL,
+     PRIMARY KEY(CUSTOMER_ID),
+     FOREIGN KEY(Customer_ID) REFERENCES customer(Customer_ID),
+      FOREIGN KEY(Order_ID) REFERENCES orders(Order_ID)
+      );
+
+Insert into places(Date, Order_ID)
+    Values('30/08/2021',2002),
+    ('01/09/2021',2003),
+    ('13/09/2021',2004),
+    ('20/09/2021',2005),
+    ('23/09/2021',2006),
+    ('10/10/2021',2007),
+    ('11/10/2021',2008),
+    ('11/10/2021',2009),
+    ('12/10/2021',2010),
+('12/10/2021',2011),
+    ('12/10/2021',2012),
+    ('13/10/2021',2013),
+    ('13/10/2021',2014),
+    ('14/10/2021',2015);
+checks:
+ create table Checks(
+    Customer_ID int NOT NULL AUTO_INCREMENT,
+    Category_ID int NOT NULL,
+    PRIMARY KEY(Customer_ID),
+    Foreign key(Customer_ID) references customer(Customer_ID),
+    Foreign key(Category_ID) references Category(Category_ID)
+    );
+ Insert into checks(Customer_ID,Category_ID)
+     Values(1001,101);
+Insert into checks(Category_ID)
+     Values(102),
+     (103),
+     (104),
+     (105),
+     (106),
+     (107),
+     (108),
+     (109),
+     (110),
+     (111),
+     (112),
+     (113),
+     (114),
+     (115);
+login:
+create table Login(
+     User_ID int NOT NULL,
+     Password varchar(255),
+     Username varchar(255),
+     Primary key(User_ID,Username),
+     Foreign key(Username) references Admin(Username)
+     );
+Insert into Login(User_ID, Password, Username)
+     Values(2054901008,'CATBUS','Nishat'),
+     (2054901067,'CATBUS','Khadiza'),
+     (2054901071,'CATBUS','Fabiha'),
+     (2054901081,'CATBUS','Toha'),
+     (2054901093,'CATBUS','Tasfia');
+enters:
+
+ create table Enters(
+    User_ID INT NOT NULL,
+    Username varchar(255),
+    Primary key(User_ID,Username),
+    Foreign key(User_ID) references Login(User_ID),
+    Foreign key(Username)references Admin(Username)
+      );
+
+Insert into Enters(User_ID,Username)
+     Values(2054901008,'Nishat'),
+     (2054901067,'Khadiza'),
+     (2054901071,'Fabiha'),
+      (2054901081,'Toha'),
+     (2054901093,'Tasfia');
+
+takes:
+ create table Takes(
+     Order_ID int NOT NULL AUTO_INCREMENT,
+     Username varchar(255),
+     Primary key(Order_ID),
+     Foreign key(Order_ID) references Orders(Order_ID),
+     Foreign key(Username) references Admin(Username)
+     );
+  insert into  takes(Order_ID,Username)
+     values(2001,'Nishat');
+ insert into takes(Username)
+    values('Khadiza'),
+    ('Fabiha'),
+    ('Toha'),
+    ('Tasfia'),
+    ('Toha'),
+    ('Khadiza'),
+    ('Nishat'),
+    ('Nishat'),
+    ('Nishat'),
+    ('Fabiha'),
+    ('Toha'),
+    ('Toha'),
+    ('Tasfia'),
+    ('Khadiza');
+Order_food:
+
+ create table Order_Food(
+    Order_ID int NOT NULL AUTO_INCREMENT,
+    Food_ID int NOT NULL,
+    Quantity int NOT NULL,
+    Price int NOT NULL,
+    PRIMARY KEY(Order_ID,Food_ID),
+    Foreign Key(Order_ID) references Orders(Order_ID),
+    Foreign Key(Food_ID) references Food(Food_ID)
+     );
+ Insert into Order_Food(Order_ID, Food_ID, Quantity, Price)
+    Values(2001,201,1,450);
+Insert into Order_Food(Food_ID, Quantity, Price)
+    Values(202,1,590),
+    (203,2,220),
+    (204,4,380),
+    (205,1,300),
+    (206,2,400),
+    (207,5,300),
+    (208,5,500),
+    (209,1,520),
+    (210,2,235),
+    (211,1,530),
+    (212,1,340),
+    (213,1,300),
+    (214,1,340),
+    (215,1,50);
+
+Bill:
+
+ create table Bill(
+    Customer_ID int NOT NULL AUTO_INCREMENT,
+    Payment_ID int NOT NULL,
+    Amount int,
+    Primary Key(Customer_ID),
+    Foreign Key(Customer_ID) references Customer(Customer_ID)
+    );
+Insert into Bill(Customer_ID, Payment_ID, Amount)
+     Values(1001,88001,510);
+Insert into Bill(Customer_ID,Payment_ID, Amount)
+         Values(1002,88002,650),
+         (1003,88003,1020),
+          (1004,88004,1520),
+          (1005,88005,300),
+          (1006,88006,800),
+          (1007,88007,1500),
+         (1008,88008,2500),
+         (1009,88009,580),
+         (1010,88010,670),
+         (1011,88011,590),
+        (1012,88011,380),
+        (1013,88012,400),
+       (1014,88013,700),
+       (1015,88014,900);
