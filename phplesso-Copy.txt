@@ -1,0 +1,262 @@
+echo statement: 
+syntax-
+<?php
+echo "hi";
+?>
+# difference between print and echo 
+	- we can store a statement in a variable using print but we cannot do so in echo.
+		$var= print ("hello"); //this one returns hello
+		$var=echo ("hello"); // shows syntax error
+	- print cannot read arguments or statements while echo can read them i.e. 
+		echo "argument 1", "argument 2"; // this one compiles the program
+		print"argument 1", "argument 2"; // cannot compile shows error (Parse error: syntax error, unexpected ',' )
+
+
+	ii)$_SERVER is a PHP super global variable which holds information about headers, paths, and script locations.
+	echo $_SERVER['PHP_SELF'];//returns filename of the current file
+    echo "<br>";
+    echo $_SERVER['SERVER_NAME'];//servername
+    echo "<br>";
+    echo $_SERVER['HTTP_HOST'];//host header
+    echo "<br>";
+    echo $_SERVER['HTTP_USER_AGENT'];//prints Mozilla
+    echo "<br>";
+    echo $_SERVER['SCRIPT_NAME'];// file name
+
+	iii)$_POST: is used to collect form data after submitting an HTML form with method="post".
+
+<html>
+    <head>
+        <title?>Form</title>
+</head>
+<body>
+    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+    Name:<input type="text" name="name">
+        <br>
+    Email:<input type="text" name="Email">
+        <br>
+        <input type="submit" name="Submit">
+</form>
+</body>
+</html>
+<?php
+ if($_SERVER["REQUEST_METHOD"]=="POST"){    // or    if(isset($_POST['Submit']))
+$uname= $_POST['name'];
+$mail=$_POST['Email'];
+if(empty($uname)|| empty($mail)){
+    echo "Name or Email is empty";
+}
+else{
+    echo "Name:",$uname,"<br>","Email:", $mail;
+ }
+}
+?>
+
+	iv)$_GET: is used to collect form data after submitting an HTML form with method="get"
+	<?php
+if(isset($_GET['name']) AND isset($_GET['food'])){
+    $n=$_GET['name'];
+    $f=$_GET['food'];
+    echo "My name is $n and my favorite food is $f";
+}
+
+
+
+PDO:
+exception handling:
+<?php
+try{
+$host="localhost";
+$dbname="ICT_B";
+$user="root";
+$pass="";
+$con= new PDO("mysql:host=$host; dbname=$dbname","$user","$pass");
+$con->setAttribute(PDO::ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+}
+catch(PDOException $e){
+    echo $e->getMessage();
+}
+
+/*if($con==true)
+{
+    echo "connection formed successfully";
+}*/
+
+?>
+
+displays data of a column:
+<?php
+
+$host="localhost";
+$dbname="ftest";
+$user="root";
+$pass="";
+$con= new PDO("mysql:host=$host; dbname=$dbname","$user","$pass");
+$rows=$con->query("select Name from users");// prints all data from 'Name' column of table 'users'
+while($row=$rows->fetch())// to avoid fetch we use foreach function. check below for syntax.
+echo $row['Name']."<br>";//'column name is 'Name'
+?>
+
+foreach function: 
+syntax according to the line in comment from the above code,
+foreach($rows as $row)
+
+fetch:
+<?php
+
+$host="localhost";
+$dbname="ftest";
+$user="root";
+$pass="";
+$con= new PDO("mysql:host=$host; dbname=$dbname","$user","$pass");
+$rows=$con->query("select Name from users");
+while($row=$rows->fetch(PDO::FETCH_OBJ))
+var_dump ($row);
+?>
+
+
+types: PDO::FETCH_OBJ= prints obj
+	PDO::FETCH_NUM= enumerated array
+	PDO::FETCH_ASSOC= associated array
+	PDO::FETCH_BOTH= allows both (num & assoc)
+	PDO::FETCH_LAZY= allows all three
+
+fetchColumn():
+this fetches only the first element of mentioned column. if not mentioned it echoes the first element of first column.
+
+<?php
+require "pdocon.php";
+$data= $con->query("Select * from users");
+$var= $data->fetchColumn(2); // fetches first element of 2nd column as index starts with 0
+echo $var;
+?>
+
+fetchAll():
+
+<?php
+require "pdocon.php";
+$data= $con->query("Select * from users");
+$var= $data->fetchAll();// prints everything but in array format but might look complex
+echo "<pre>"; // pre formatted tag which shows eactly how any script is written in editor
+print_r ($var);
+echo "</pre>";
+?>
+
+to make it more simpler we can use fetchAll(PDO:: FETCH_ASSOC);
+or this as well fetchAll(PDO:: FETCH_NUM);// this only shows column's indexes not their name
+or this as well fetchAll(PDO:: FETCH_OBJ);// this shows column names as well
+
+<?php
+require "pdocon.php";
+$data= $con->query("Select * from users");
+$var= $data->fetchAll(PDO:: FETCH_ASSOC);// prints everything but in array format but might look complex
+echo "<pre>"; // pre formatted tag which shows eactly how any script is written in editor
+print_r ($var);
+echo "</pre>";
+echo $var['1']['Email'];// prints 2nd row element of column name "Email'
+?>
+
+#to insert data manually using query statement from php:
+
+<?php
+require "pdocon.php";
+$data= $con->query("insert into users(ID,Name,Email,Password)
+ values(106,'Mango','summer@gmail.com','-0o0-')");
+
+?>
+ we can also use prepare statement instead of query:
+
+<?php
+require "pdocon.php";
+$id= 107;
+$name= "Olive";
+$email= "unknown@gmail.com";
+$pass="*O*";
+$data= $con->prepare("insert into users(ID,Name,Email,Password)
+ values(:ID,:Name,:Email,:Password)");// creating instance of columns not variables
+ $data->execute(array(
+     ':ID'=>$id,
+     ':Name'=>$name,
+     ':Email'=>$email,
+     ':Password'=>$pass
+ ));
+
+?>
+
+to make it more short we can use this as well
+
+<?php
+require "pdocon.php";
+$id= 108;
+$name= "Litchi";
+$email= "sum@gmail.com";
+$pass="+O+";
+$data= $con->prepare("insert into users(ID,Name,Email,Password)
+ values(?,?,?,?)");// creating instance of columns not variables
+ $data->execute(array(
+     $id,
+     $name,
+     $email,
+     $pass
+ ));
+
+?>
+
+update & delete:
+
+update:
+<?php
+require "pdocon.php";
+$id= 108;
+$name= "Litchi";
+//$email= "sum@gmail.com";
+//$pass="+O+";
+$data= $con->prepare("update users set Name= ? where ID= ?");
+ $data->execute(array(
+     $name,// we gotta maintain the serialization otherwise it won't update if we use '?' instead we can just directly mention our instacnces.
+    $id
+
+ ));
+
+?>
+
+delete:
+<?php
+require "pdocon.php";
+$id= 102;
+//$name= "Litchi";
+//$email= "sum@gmail.com";
+//$pass="+O+";
+$data= $con->prepare("delete from users where ID= ?");
+ $data->execute(array(
+    $id
+
+ ));
+
+?>
+
+rowcount: Counts the number of rows in the table
+<?php
+require "pdocon.php";
+
+$data= $con->query("select * from users");
+print_r($data->rowCount());
+ 
+
+?>
+
+to display all the rowelements of a particular column
+<?php
+require "pdocon.php";
+
+$data= $con->query("select * from users");
+
+if($data->rowCount()>0){
+    while($row=$data->fetch(PDO:: FETCH_ASSOC))
+    echo $row['Name'] . "<br>";
+}
+ else{
+     echo "No data has been entered yet";
+ }
+
+?>
